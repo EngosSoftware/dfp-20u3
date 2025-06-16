@@ -5,9 +5,9 @@
 #include "../library/src/bid_conf.h"
 #include "../library/src/bid_functions.h"
 
-void display(char *fname, BID_UINT128 x) {
+void display(char *f_name, const BID_UINT128 x) {
   char buffer[500];
-  printf("\n%s\n", fname);
+  printf("\n%s\n", f_name);
   printf("=====================================================================\n");
   printf("[%016llx,%016llx] ", x.w[1], x.w[0]);
   printf("%02x ", *pfpsf);
@@ -19,15 +19,14 @@ void display_from_string_rnd(char *input, int rnd) {
   char buffer[500];
   printf("%d \"%s\" ", rnd, input);
   *pfpsf = 0;
-  clock_t start, end;
-  start = clock();
-  BID_UINT128 x = bid128_from_string(input, rnd);
-  end = clock();
+  const clock_t start= clock();
+  const BID_UINT128 x = bid128_from_string(input, rnd);
+  const clock_t end = clock();
   printf("[%016llx,%016llx] ", x.w[1], x.w[0]);
   printf("%02x ", *pfpsf);
   bid128_to_string(buffer, x);
   printf("%s ", buffer);
-  double time_spent = ((double) (end - start)) / CLOCKS_PER_SEC;
+  const double time_spent = ((double) (end - start)) / CLOCKS_PER_SEC;
   printf("%f[s]\n", time_spent);
 }
 
@@ -39,12 +38,11 @@ void test_bid128_scalbn() {
   BID_UINT128 bid128;
   bid128.w[1] = 0x000000028a080400;
   bid128.w[0] = 0x8002020024000000;
-  BID_UINT128 res = bid128_scalbn(bid128, -9, BID_ROUNDING_TO_NEAREST);
+  const BID_UINT128 res = bid128_scalbn(bid128, -9, BID_ROUNDING_TO_NEAREST);
   display("bid128_scalbn", res);
 }
 
 void test_bid128_zeros() {
-  int rnd = BID_ROUNDING_TO_NEAREST;
   display_from_string("0e-6211");
   display_from_string("0e-6210");
   display_from_string("0e-6209");
