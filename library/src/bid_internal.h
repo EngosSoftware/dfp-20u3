@@ -2718,16 +2718,16 @@ typedef struct BID_ALIGN (16)
        BID_UINT64 w[8];
      } BID_UINT512;
 
-// #define P                               34
+// #define P 34
 #define MASK_STEERING_BITS              0x6000000000000000ull
 #define MASK_BINARY_EXPONENT1           0x7fe0000000000000ull
 #define MASK_BINARY_SIG1                0x001fffffffffffffull
 #define MASK_BINARY_EXPONENT2           0x1ff8000000000000ull
-    //used to take G[2:w+3] (sec 3.3)
+// used to take G[2:w+3] (sec 3.3)
 #define MASK_BINARY_SIG2                0x0007ffffffffffffull
-    //used to mask out G4:T0 (sec 3.3)
+// used to mask out G4:T0 (sec 3.3)
 #define MASK_BINARY_OR2                 0x0020000000000000ull
-    //used to prefix 8+G4 to T (sec 3.3)
+// used to prefix 8+G4 to T (sec 3.3)
 #define UPPER_EXPON_LIMIT               51
 #define MASK_EXP                        0x7ffe000000000000ull
 #define MASK_EXP2                       0x1fff800000000000ull

@@ -98,11 +98,21 @@ void test() {
 
 }
 
+void nans() {
+  display_from_string("NaN");
+  display_from_string("-NaN");
+  display_from_string("SNaN");
+  display_from_string("-SNaN");
+  display_from_string("Inf");
+  display_from_string("-Inf");
+}
+
 int main() {
 
   //bench_from_string();
 
-  test();
+  // test();
+  nans();
 
   //test_bid128_scalbn();
 
