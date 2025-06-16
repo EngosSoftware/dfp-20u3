@@ -100,7 +100,9 @@ void test() {
 
 void nans() {
   display_from_string("NaN");
+  display_from_string("QNaN");
   display_from_string("-NaN");
+  display_from_string("-QNaN");
   display_from_string("SNaN");
   display_from_string("-SNaN");
   display_from_string("Inf");
