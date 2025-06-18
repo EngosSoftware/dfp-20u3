@@ -15,7 +15,7 @@ void display(char *f_name, const BID_UINT128 x) {
   printf("%s\n", buffer);
 }
 
-void display_from_string_rnd(char *input, int rnd) {
+void display_from_string_rnd(char *input, const int rnd) {
   char buffer[500];
   printf("%d \"%s\" ", rnd, input);
   *pfpsf = 0;
@@ -26,7 +26,7 @@ void display_from_string_rnd(char *input, int rnd) {
   printf("%02x ", *pfpsf);
   bid128_to_string(buffer, x);
   printf("%s ", buffer);
-  const double time_spent = ((double) (end - start)) / CLOCKS_PER_SEC;
+  const double time_spent = (double) (end - start) / CLOCKS_PER_SEC;
   printf("%f[s]\n", time_spent);
 }
 
