@@ -1650,8 +1650,7 @@ bid_handle_UF_128_rem (BID_UINT128 * pres, BID_UINT64 sgn, int expon, BID_UINT12
 //   Macro for handling BID128 underflow
 //
 __BID_INLINE__ BID_UINT128 *
-handle_UF_128 (BID_UINT128 * pres, BID_UINT64 sgn, int expon, BID_UINT128 CQ,
-	       unsigned *prounding_mode, unsigned *fpsc) {
+handle_UF_128 (BID_UINT128 * pres, BID_UINT64 sgn, int expon, BID_UINT128 CQ, unsigned *prounding_mode, unsigned *fpsc) {
   BID_UINT128 T128, TP128, Qh, Ql, Qh1, Stemp, Tmp, Tmp1;
   BID_UINT64 carry, CY;
   int ed2, amount;
@@ -2099,8 +2098,7 @@ bid_get_BID128_fast (BID_UINT128 * pres, BID_UINT64 sgn, int expon, BID_UINT128 
 //   General BID128 pack macro
 //
 __BID_INLINE__ BID_UINT128 *
-bid_get_BID128 (BID_UINT128 * pres, BID_UINT64 sgn, int expon, BID_UINT128 coeff,
-	    unsigned *prounding_mode, unsigned *fpsc) {
+bid_get_BID128 (BID_UINT128 * pres, BID_UINT64 sgn, int expon, BID_UINT128 coeff, unsigned *prounding_mode, unsigned *fpsc) {
   BID_UINT128 T;
   BID_UINT64 tmp, tmp2;
 
@@ -2116,23 +2114,20 @@ bid_get_BID128 (BID_UINT128 * pres, BID_UINT64 sgn, int expon, BID_UINT128 coeff
   if (expon < 0 || expon > DECIMAL_MAX_EXPON_128) {
     // check UF
     if (expon < 0) {
-      return handle_UF_128 (pres, sgn, expon, coeff, prounding_mode,
-			    fpsc);
+      return handle_UF_128 (pres, sgn, expon, coeff, prounding_mode, fpsc);
     }
 
     if (expon - MAX_FORMAT_DIGITS_128 <= DECIMAL_MAX_EXPON_128) {
       T = bid_power10_table_128[MAX_FORMAT_DIGITS_128 - 1];
-      while (__unsigned_compare_gt_128 (T, coeff)
-	     && expon > DECIMAL_MAX_EXPON_128) {
-	coeff.w[1] =
-	  (coeff.w[1] << 3) + (coeff.w[1] << 1) + (coeff.w[0] >> 61) +
-	  (coeff.w[0] >> 63);
-	tmp2 = coeff.w[0] << 3;
-	coeff.w[0] = (coeff.w[0] << 1) + tmp2;
-	if (coeff.w[0] < tmp2)
-	  coeff.w[1]++;
-
-	expon--;
+      while (__unsigned_compare_gt_128 (T, coeff) && expon > DECIMAL_MAX_EXPON_128) {
+	    coeff.w[1] = (coeff.w[1] << 3) + (coeff.w[1] << 1) + (coeff.w[0] >> 61) + (coeff.w[0] >> 63);
+	    tmp2 = coeff.w[0] << 3;
+	    coeff.w[0] = (coeff.w[0] << 1) + tmp2;
+	    if (coeff.w[0] < tmp2)
+	    {
+		    coeff.w[1]++;
+	    }
+	    expon--;
       }
     }
     if (expon > DECIMAL_MAX_EXPON_128) {

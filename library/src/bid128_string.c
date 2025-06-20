@@ -289,10 +289,8 @@ bid128_from_string (char *ps _RND_MODE_PARAM _EXC_FLAGS_PARAM
                     _EXC_MASKS_PARAM _EXC_INFO_PARAM) {
 #endif
   BID_UINT128 CX, res;
-  BID_UINT64 sign_x, coeff_high, coeff_low, coeff2, coeff_l2, carry = 0x0ull,
-    scale_high, right_radix_leading_zeros;
-  int ndigits_before, ndigits_after, ndigits_total, dec_expon, sgn_exp,
-    i, d2, rdx_pt_enc, set_inexact=0;
+  BID_UINT64 sign_x, coeff_high, coeff_low, coeff2, coeff_l2, carry = 0x0ull, scale_high, right_radix_leading_zeros;
+  int ndigits_before, ndigits_after, ndigits_total, dec_expon, sgn_exp, i, d2, rdx_pt_enc, set_inexact = 0;
   char c, buffer[MAX_STRING_DIGITS_128];
   int save_rnd_mode;
   int save_fpsf;
@@ -458,8 +456,7 @@ bid128_from_string (char *ps _RND_MODE_PARAM _EXC_FLAGS_PARAM
 
   if (!rdx_pt_enc) {
     // investigate string (before radix point)
-    while ((unsigned) (c - '0') <= 9
-           /*&& ndigits_before < MAX_STRING_DIGITS_128*/) {
+    while ((unsigned) (c - '0') <= 9) {
       if(ndigits_before < MAX_FORMAT_DIGITS_128) buffer[ndigits_before] = c; 
       else if(ndigits_before < MAX_STRING_DIGITS_128) { buffer[ndigits_before] = c; if(c>'0') set_inexact=1; }
 	  else if(c>'0') set_inexact=1;
@@ -474,11 +471,21 @@ bid128_from_string (char *ps _RND_MODE_PARAM _EXC_FLAGS_PARAM
       if ((c = *ps)) {
 
         // investigate string (after radix point)
-        while ((unsigned) (c - '0') <= 9
-               /*&& ndigits_total < MAX_STRING_DIGITS_128*/) {
-          if(ndigits_total < MAX_FORMAT_DIGITS_128) buffer[ndigits_total] = c;
-          else if(ndigits_total < MAX_STRING_DIGITS_128) { buffer[ndigits_total] = c; if(c>'0') set_inexact=1; }
-	      else if(c>'0') set_inexact=1;
+        while ((unsigned) (c - '0') <= 9) {
+          if (ndigits_total < MAX_FORMAT_DIGITS_128)
+          {
+            buffer[ndigits_total] = c;
+          } else if (ndigits_total < MAX_STRING_DIGITS_128)
+          {
+            buffer[ndigits_total] = c;
+            if (c>'0')
+            {
+              set_inexact = 1;
+            }
+          } else if (c>'0')
+	        {
+	          set_inexact=1;
+	        }
           ps++;
           c = *ps;
           ndigits_total++;
@@ -660,6 +667,8 @@ bid128_from_string (char *ps _RND_MODE_PARAM _EXC_FLAGS_PARAM
       carry=0;
       break;
     case BID_ROUNDING_TIES_AWAY:
+      char a = buffer[i];
+      char b = '4' - a;
       carry = ((unsigned) ('4' - buffer[i])) >> 31;
       if (dec_expon < 0) {
         for (; i < ndigits_total; i++) {
