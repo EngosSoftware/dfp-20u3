@@ -667,8 +667,6 @@ bid128_from_string (char *ps _RND_MODE_PARAM _EXC_FLAGS_PARAM
       carry=0;
       break;
     case BID_ROUNDING_TIES_AWAY:
-      char a = buffer[i];
-      char b = '4' - a;
       carry = ((unsigned) ('4' - buffer[i])) >> 31;
       if (dec_expon < 0) {
         for (; i < ndigits_total; i++) {

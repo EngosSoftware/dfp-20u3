@@ -194,7 +194,7 @@ int main()
     // display_from_string("12345678901234567890123456789012345",4);
     // display_from_string("0.0000000000000000000000000000000000001001",0);
 
-    display_from_string("-9.9999999999999999999999999999999995",2);
+    display_from_string("1.1E-2E",2);
 
     return EXIT_SUCCESS;
 }
