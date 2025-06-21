@@ -11,7 +11,7 @@ void display(char* f_name, const BID_UINT128 x)
     printf("\n%s\n", f_name);
     printf("=====================================================================\n");
     printf("[%016llx,%016llx] ", x.w[1], x.w[0]);
-    printf("%02x ", *pfpsf);
+    printf("0x%02x ", *pfpsf);
     bid128_to_string(buffer, x);
     printf("%s\n", buffer);
 }
@@ -25,7 +25,7 @@ void display_from_string_rnd(char* input, const unsigned int rnd)
     const BID_UINT128 x = bid128_from_string(input, rnd);
     const clock_t end = clock();
     printf("[0x%016llx,0x%016llx] ", x.w[1], x.w[0]);
-    printf("%02x ", *pfpsf);
+    printf("0x%02x ", *pfpsf);
     bid128_to_string(buffer, x);
     printf("%s ", buffer);
     const double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
@@ -125,17 +125,26 @@ void nans()
     display_from_string("-Inf",BID_ROUNDING_TO_NEAREST);
 }
 
-void test_bid128_add(const BID_UINT64 xh, const BID_UINT64 xl, const BID_UINT64 yh, const BID_UINT64 yl)
+void test_bid128_add(const BID_UINT64 xh, const BID_UINT64 xl, const BID_UINT64 yh, const BID_UINT64 yl, const unsigned int rnd)
 {
     BID_UINT128 x, y;
     x.w[1] = xh;
     x.w[0] = xl;
     y.w[1] = yh;
     y.w[0] = yl;
-    const BID_UINT128 res = bid128_add(x, y, 0);
+    const BID_UINT128 res = bid128_add(x, y, rnd);
     display("bid128_add", res);
 }
 
+void test_bid128_add_str(const char* a, const char *b, const unsigned int rnd)
+{
+    const BID_UINT128 x = bid128_from_string(a, 0);
+    display("x = ", x);
+    const BID_UINT128 y = bid128_from_string(b, 0);
+    display("y = ", y);
+    const BID_UINT128 res = bid128_add(x, y, rnd);
+    display("sum = ", res);
+}
 
 void mul_128x64_to_128(BID_UINT128 Q128, BID_UINT64 A64, BID_UINT128 B128)
 {
@@ -194,7 +203,11 @@ int main()
     // display_from_string("12345678901234567890123456789012345",4);
     // display_from_string("0.0000000000000000000000000000000000001001",0);
 
-    display_from_string("1.1E-2E",2);
+    // display_from_string("-958896965.958776968777978E-6196",0);
+
+    test_bid128_add_str(
+    "-67742893945653349875463748543548.9E-6184", "+1100.0100110001101010E-6045"
+    ,1);
 
     return EXIT_SUCCESS;
 }
