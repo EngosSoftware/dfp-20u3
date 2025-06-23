@@ -125,7 +125,8 @@ void nans()
     display_from_string("-Inf",BID_ROUNDING_TO_NEAREST);
 }
 
-void test_bid128_add(const BID_UINT64 xh, const BID_UINT64 xl, const BID_UINT64 yh, const BID_UINT64 yl, const unsigned int rnd)
+void test_bid128_add(const BID_UINT64 xh, const BID_UINT64 xl, const BID_UINT64 yh, const BID_UINT64 yl,
+                     const unsigned int rnd)
 {
     BID_UINT128 x, y;
     x.w[1] = xh;
@@ -136,7 +137,7 @@ void test_bid128_add(const BID_UINT64 xh, const BID_UINT64 xl, const BID_UINT64 
     display("bid128_add", res);
 }
 
-void test_bid128_add_str(const char* a, const char *b, const unsigned int rnd)
+void test_bid128_add_str(const char* a, const char* b, const unsigned int rnd)
 {
     const BID_UINT128 x = bid128_from_string(a, 0);
     display("x = ", x);
@@ -144,32 +145,6 @@ void test_bid128_add_str(const char* a, const char *b, const unsigned int rnd)
     display("y = ", y);
     const BID_UINT128 res = bid128_add(x, y, rnd);
     display("sum = ", res);
-}
-
-void mul_128x64_to_128(BID_UINT128 Q128, BID_UINT64 A64, BID_UINT128 B128)
-{
-    BID_UINT64 ALBH_L = (A64) * (B128).w[1];
-
-    BID_UINT64 CX64 = A64;
-    BID_UINT64 CY64 = (B128).w[0];
-    BID_UINT128 P128;
-
-    BID_UINT64 CXH = (CX64) >> 32;
-    BID_UINT64 CXL = (BID_UINT32)(CX64);
-    BID_UINT64 CYH = (CY64) >> 32;
-    BID_UINT64 CYL = (BID_UINT32)(CY64);
-    BID_UINT64 PM = CXH * CYL;
-    BID_UINT64 PH = CXH * CYH;
-    BID_UINT64 PL = CXL * CYL;
-    BID_UINT64 PM2 = CXL * CYH;
-    PH += (PM >> 32);
-    PM = (BID_UINT64)((BID_UINT32)PM) + PM2 + (PL >> 32);
-    (P128).w[1] = PH + (PM >> 32);
-    (P128).w[0] = (PM << 32) + (BID_UINT32)PL;
-
-    Q128 = P128;
-
-    (Q128).w[1] += ALBH_L;
 }
 
 int main()
@@ -205,9 +180,7 @@ int main()
 
     // display_from_string("-958896965.958776968777978E-6196",0);
 
-    test_bid128_add_str(
-    "-67742893945653349875463748543548.9E-6184", "+1100.0100110001101010E-6045"
-    ,1);
+    test_bid128_add_str("-67742893945653349875463748543548.9E-6184", "+1100.0100110001101010E-6045", 1);
 
     return EXIT_SUCCESS;
 }

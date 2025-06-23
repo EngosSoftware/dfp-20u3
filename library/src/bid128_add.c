@@ -529,7 +529,8 @@ bid128_add(BID_UINT128 x, BID_UINT128 y
         {
             // x is NAN
             // check first for non-canonical NaN payload
-            if (((x.w[1] & 0x00003fffffffffffull) > 0x0000314dc6448d93ull) || (((x.w[1] & 0x00003fffffffffffull) == 0x0000314dc6448d93ull) && (x.w[0] > 0x38c15b09ffffffffull)))
+            if (((x.w[1] & 0x00003fffffffffffull) > 0x0000314dc6448d93ull) || (((x.w[1] & 0x00003fffffffffffull) ==
+                0x0000314dc6448d93ull) && (x.w[0] > 0x38c15b09ffffffffull)))
             {
                 x.w[1] = x.w[1] & 0xffffc00000000000ull;
                 x.w[0] = 0x0ull;
