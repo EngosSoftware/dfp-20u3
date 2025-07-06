@@ -33,6 +33,8 @@
  * 
  ****************************************************************************/
 
+#include <stdio.h>
+
 #include "bid_internal.h"
 
 static void
@@ -1889,30 +1891,30 @@ delta_ge_zero:
         C4gt5toq4m1 = 
             C4.w[0] > bid_midpoint64[q4 - 1];
       } else if (q4 <= 38) {
-        C4gt5toq4m1 = 
-            C4.w[1] > bid_midpoint128[q4 - 1].w[1] ||
-            (C4.w[1] == bid_midpoint128[q4 - 1].w[1] &&
-            C4.w[0] > bid_midpoint128[q4 - 1].w[0]);
+        C4gt5toq4m1 =
+            C4.w[1] > bid_midpoint128[q4 - 20].w[1] ||
+            (C4.w[1] == bid_midpoint128[q4 - 20].w[1] &&
+            C4.w[0] > bid_midpoint128[q4 - 20].w[0]);
       } else if (q4 <= 58) {
         C4gt5toq4m1 = 
-            C4.w[2] > bid_midpoint192[q4 - 1].w[2] ||
-            (C4.w[2] == bid_midpoint192[q4 - 1].w[2] &&
-            C4.w[1] > bid_midpoint192[q4 - 1].w[1]) ||
-            (C4.w[2] == bid_midpoint192[q4 - 1].w[2] &&
-            C4.w[1] == bid_midpoint192[q4 - 1].w[1] &&
-            C4.w[0] > bid_midpoint192[q4 - 1].w[0]);
+            C4.w[2] > bid_midpoint192[q4 - 39].w[2] ||
+            (C4.w[2] == bid_midpoint192[q4 - 39].w[2] &&
+            C4.w[1] > bid_midpoint192[q4 - 39].w[1]) ||
+            (C4.w[2] == bid_midpoint192[q4 - 39].w[2] &&
+            C4.w[1] == bid_midpoint192[q4 - 39].w[1] &&
+            C4.w[0] > bid_midpoint192[q4 - 39].w[0]);
       } else { // if (q4 <= 68)
         C4gt5toq4m1 = 
-            C4.w[3] > bid_midpoint256[q4 - 1].w[3] ||
-            (C4.w[3] == bid_midpoint256[q4 - 1].w[3] &&
-            C4.w[2] > bid_midpoint256[q4 - 1].w[2]) ||
-            (C4.w[3] == bid_midpoint256[q4 - 1].w[3] &&
-            C4.w[2] == bid_midpoint256[q4 - 1].w[2] &&
-            C4.w[1] > bid_midpoint256[q4 - 1].w[1]) ||
-            (C4.w[3] == bid_midpoint256[q4 - 1].w[3] &&
-            C4.w[2] == bid_midpoint256[q4 - 1].w[2] &&
-            C4.w[1] == bid_midpoint256[q4 - 1].w[1] &&
-            C4.w[0] > bid_midpoint256[q4 - 1].w[0]);
+            C4.w[3] > bid_midpoint256[q4 - 59].w[3] ||
+            (C4.w[3] == bid_midpoint256[q4 - 59].w[3] &&
+            C4.w[2] > bid_midpoint256[q4 - 59].w[2]) ||
+            (C4.w[3] == bid_midpoint256[q4 - 59].w[3] &&
+            C4.w[2] == bid_midpoint256[q4 - 59].w[2] &&
+            C4.w[1] > bid_midpoint256[q4 - 59].w[1]) ||
+            (C4.w[3] == bid_midpoint256[q4 - 59].w[3] &&
+            C4.w[2] == bid_midpoint256[q4 - 59].w[2] &&
+            C4.w[1] == bid_midpoint256[q4 - 59].w[1] &&
+            C4.w[0] > bid_midpoint256[q4 - 59].w[0]);
       }
 
       if ((e3 == expmin && (q3 + scale) < p34) || 
@@ -3620,6 +3622,7 @@ delta_ge_zero:
       *ptr_is_midpoint_gt_even = is_midpoint_gt_even;
       *ptr_is_inexact_lt_midpoint = is_inexact_lt_midpoint;
       *ptr_is_inexact_gt_midpoint = is_inexact_gt_midpoint;
+      printf("%x\n", *pfpsf);
       BID_SWAP128 (res);
       BID_RETURN (res)
 

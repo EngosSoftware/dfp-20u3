@@ -451,8 +451,7 @@ bid___div_256_by_128 (BID_UINT128 * pCQ, BID_UINT256 * pCA4, BID_UINT128 CY) {
 
     // CA4 -= CA2
     __sub_borrow_out (CA4.w[0], carry64, CA4.w[0], CA2.w[0]);
-    __sub_borrow_in_out (CA4.w[1], carry64, CA4.w[1], CA2.w[1],
-			 carry64);
+    __sub_borrow_in_out (CA4.w[1], carry64, CA4.w[1], CA2.w[1], carry64);
     CA4.w[2] = CA4.w[2] - CA2.w[2] - carry64;
 
     lx = ((double) CA4.w[2] * d128 +

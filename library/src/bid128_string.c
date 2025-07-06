@@ -59,7 +59,7 @@ VOID_WRAPFN_OTHERTYPERES_DFP(bid128_to_string, char, 128) void bid128_to_string(
     unsigned int d0, d123;
     unsigned int zero_digit = (unsigned int)'0';
     BID_UINT64 HI_18Dig, LO_18Dig, Tmp;
-    BID_UINT32 MiDi[12], *ptr;
+    BID_UINT32 MiDi[12] = {0,0,0,0,0,0,0,0,0,0,0,0}, *ptr;
     char *c_ptr_start, *c_ptr;
     int midi_ind, k_lcv, len;
     int save_fpsf;

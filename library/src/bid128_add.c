@@ -3433,25 +3433,8 @@ bid128_add(BID_UINT128 x, BID_UINT128 y
                         // general correction from RN to RA, RM, RP, RZ; result uses y_exp
                         if (rnd_mode != BID_ROUNDING_TO_NEAREST)
                         {
-                            if ((!x_sign
-                                && ((rnd_mode == BID_ROUNDING_UP
-                                        && is_inexact_lt_midpoint)
-                                    || ((rnd_mode == BID_ROUNDING_TIES_AWAY
-                                            || rnd_mode == BID_ROUNDING_UP)
-                                        && is_midpoint_gt_even))) || (x_sign
-                                &&
-                                ((rnd_mode ==
-                                        BID_ROUNDING_DOWN
-                                        &&
-                                        is_inexact_lt_midpoint)
-                                    ||
-                                    ((rnd_mode ==
-                                            BID_ROUNDING_TIES_AWAY
-                                            || rnd_mode
-                                            ==
-                                            BID_ROUNDING_DOWN)
-                                        &&
-                                        is_midpoint_gt_even))))
+                            if ((!x_sign && ((rnd_mode == BID_ROUNDING_UP && is_inexact_lt_midpoint) || ((rnd_mode == BID_ROUNDING_TIES_AWAY || rnd_mode == BID_ROUNDING_UP) && is_midpoint_gt_even))) ||
+                                (x_sign && ((rnd_mode == BID_ROUNDING_DOWN && is_inexact_lt_midpoint) || ((rnd_mode == BID_ROUNDING_TIES_AWAY || rnd_mode == BID_ROUNDING_DOWN) && is_midpoint_gt_even))))
                             {
                                 // C1 = C1 + 1
                                 C1_lo = C1_lo + 1;

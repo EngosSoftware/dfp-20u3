@@ -5,6 +5,8 @@
 #include "../library/src/bid_conf.h"
 #include "../library/src/bid_functions.h"
 
+#define DECIMAL_TINY_DETECTION_AFTER_ROUNDING 1
+
 void display(char* f_name, const BID_UINT128 x)
 {
     char buffer[500];
@@ -125,7 +127,8 @@ void nans()
     display_from_string("-Inf",BID_ROUNDING_TO_NEAREST);
 }
 
-void test_bid128_add(const BID_UINT64 xh, const BID_UINT64 xl, const BID_UINT64 yh, const BID_UINT64 yl,
+void test_bid128_add(const BID_UINT64 xh, const BID_UINT64 xl,
+                     const BID_UINT64 yh, const BID_UINT64 yl,
                      const unsigned int rnd)
 {
     BID_UINT128 x, y;
@@ -137,6 +140,32 @@ void test_bid128_add(const BID_UINT64 xh, const BID_UINT64 xl, const BID_UINT64 
     display("bid128_add", res);
 }
 
+void test_bid128_mul(const BID_UINT64 xh, const BID_UINT64 xl,
+                     const BID_UINT64 yh, const BID_UINT64 yl,
+                     const unsigned int rnd)
+{
+    BID_UINT128 x, y;
+    x.w[1] = xh;
+    x.w[0] = xl;
+    y.w[1] = yh;
+    y.w[0] = yl;
+    const BID_UINT128 res = bid128_mul(x, y, rnd);
+    display("bid128_mul", res);
+}
+
+void test_bid128_div(const BID_UINT64 xh, const BID_UINT64 xl,
+                     const BID_UINT64 yh, const BID_UINT64 yl,
+                     const unsigned int rnd)
+{
+    BID_UINT128 x, y;
+    x.w[1] = xh;
+    x.w[0] = xl;
+    y.w[1] = yh;
+    y.w[0] = yl;
+    const BID_UINT128 res = bid128_div(x, y, rnd);
+    display("bid128_div", res);
+}
+
 void test_bid128_add_str(const char* a, const char* b, const unsigned int rnd)
 {
     const BID_UINT128 x = bid128_from_string(a, 0);
@@ -144,7 +173,43 @@ void test_bid128_add_str(const char* a, const char* b, const unsigned int rnd)
     const BID_UINT128 y = bid128_from_string(b, 0);
     display("y = ", y);
     const BID_UINT128 res = bid128_add(x, y, rnd);
-    display("sum = ", res);
+    display("add = ", res);
+}
+
+void test_bid128_sub_str(const char* a, const char* b, const unsigned int rnd)
+{
+    const BID_UINT128 x = bid128_from_string(a, 0);
+    display("x = ", x);
+    const BID_UINT128 y = bid128_from_string(b, 0);
+    display("y = ", y);
+    const BID_UINT128 res = bid128_sub(x, y, rnd);
+    display("sub = ", res);
+}
+
+void test_bid128_div_str(const char* a, const char* b, const unsigned int rnd)
+{
+    const BID_UINT128 x = bid128_from_string(a, 0);
+    display("x = ", x);
+    const BID_UINT128 y = bid128_from_string(b, 0);
+    display("y = ", y);
+    const BID_UINT128 res = bid128_div(x, y, rnd);
+    display("div = ", res);
+}
+
+void test_bid128_fma(const BID_UINT64 xh, const BID_UINT64 xl,
+                     const BID_UINT64 yh, const BID_UINT64 yl,
+                     const BID_UINT64 zh, const BID_UINT64 zl,
+                     const unsigned int rnd)
+{
+    BID_UINT128 x, y, z;
+    x.w[1] = xh;
+    x.w[0] = xl;
+    y.w[1] = yh;
+    y.w[0] = yl;
+    z.w[1] = zh;
+    z.w[0] = zl;
+    const BID_UINT128 res = bid128_fma(x, y, z, rnd);
+    display("bid128_fma", res);
 }
 
 int main()
@@ -176,11 +241,27 @@ int main()
     // display_from_string("12345678901234567890123456789012345",2);
     // display_from_string("12345678901234567890123456789012345",3);
     // display_from_string("12345678901234567890123456789012345",4);
-    // display_from_string("0.0000000000000000000000000000000000001001",0);
+    // display_from_string("+9999999999999999999999999999999995E+2375",0);
 
     // display_from_string("-958896965.958776968777978E-6196",0);
 
-    test_bid128_add_str("-67742893945653349875463748543548.9E-6184", "+1100.0100110001101010E-6045", 1);
+    // test_bid128_add_str("-67742893945653349875463748543548.9E-6184", "+1100.0100110001101010E-6045", 1);
+
+    // display_from_words(0xE000000000000000, 0x0000000000000000);
+
+    // display_from_string("+123E+123",0);
+
+    // test_bid128_sub_str("-1.23456789012345678901234567890123E-6144", "9.999999999999999999999999999999999E-6143", 1);
+
+    // test_bid128_mul(0x0001ed09bead87c0, 0x378d8e62ffffffff,0x0001ed09bead87c0, 0x378d8e62ffffffff, 0x0001ed09bead87c0);
+
+    // test_bid128_mul(0x3040000000000000, 0x0000000000000000,0x3040000000000000, 0x0000000000000000, 0x0001ed09bead87c0);
+
+    //test_bid128_fma(0x3320000000000000, 0x0000000000000005, 0x2ffc000000000000, 0x000000000000000a, 0xb322000000000000, 0x000000000000000a,  2);
+
+    // test_bid128_div(0x40a46a3aae3793cf, 0xb072d3a233765dd6, 0xdfdab50a18d577e9, 0xd23d5a48965dd11f, 1);
+
+    test_bid128_div_str("1E-6176", "-2", 2);
 
     return EXIT_SUCCESS;
 }
